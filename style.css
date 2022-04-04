@@ -1,0 +1,19 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+form  {
+    width: 420px;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form * {
+    margin: 10px;
+}
