@@ -15,14 +15,12 @@ let users = [];
 const submitBtn = document.querySelector('[data-button-submit]');
 submitBtn.addEventListener('click', function(e) {
     e.preventDefault(); 
-    validateInputs();
+    // newValidateInputs();
+    // validateInputs();
     // collectUserInfo();
     // newCollectUserInfo(validateInputs()); <--- takes the returned object
 })
 
-// function newCollectUserInfo(inputs){
-//     inputs = 
-// }
 
 function collectUserInfo() {
     const userForm = document.querySelector('[data-user-form]');
@@ -39,6 +37,7 @@ function collectUserInfo() {
 
         users.push(new User(userMail.value,userCountry, userZip, userPw, userPwConfirm)) 
 
+
         console.table(users);
 
     }
@@ -51,13 +50,12 @@ function validateInputs() {
         input.addEventListener('input', function(e){
             if(input.validity.typeMismatch){
                 if(input.type === 'email') input.setCustomValidity('Expecting an email address');
-                if(input.type === 'country') input.setCustomValidity('Expecting a country');
+                if(input.type === 'text') input.setCustomValidity('Expecting a country');
                 if(input.type === 'number') input.setCustomValidity('Expecting a ZIP code');
                 if(input.type === 'password') {
-                    input.minLength = 8;
                     input.setCustomValidity('8 to 20 digits');
                 }                 
-                input.setCustomValidity('');
+                // input.setCustomValidity('');
                 input.reportValidity();
             }   else    {
                 input.setCustomValidity('');
@@ -82,3 +80,20 @@ function validateInputs() {
     // })
 
 
+function validatePassword(password) {
+    let reg = /^[A-Za-z]+$/g;
+    let len = {min: 4, max: 60};
+
+    if(!reg.test(password)) {
+        console.log('password does not match regex');
+        return false;
+    }
+
+    if(password.length < len.min || password.length > len.max) {
+        console.log('incorrect length: ' + password);
+        return false;
+    }
+
+    console.log('correct length: ' + password);
+    return true;
+}
