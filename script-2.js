@@ -24,24 +24,47 @@ pw.placeholder = '6 to 20 chars, alphanumeric'
 
 submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
-    if(email.value == ''){
+    if(email.value == '' || testEmail() === false){
         email.classList.add('bounce-invalid');
         return false;
     }
-    if(pw.value = '') return false;
+    if(pw.value == '' || pw.value.length < 6){
+        pw.classList.add('bounce-invalid');
+        return false;
+    } 
 
-    userArray.push(new User(email.value, country.value, zip.value, pw.value));
-    return new User(email.value, country.value, zip.value, pw.value);
+    if(pwConfirm.value !== pw.value){
+        pwConfirm.validity.typeMismatch = true;
+        pwConfirm.setCustomValidity('passwords must match');
+        pwConfirm.reportValidity();
+        pwConfirm.addEventListener('input', function(){
+            if(pwConfirm.value == pw.value){
+                pwConfirm.validity.typeMismatch = false;
+                return;
+            }
+        })
+        return false;
+    }
+
+    userArray.push(new User(email.value, country.value, zip.value, pw.value, pwConfirm.value));
+    console.table(userArray);
+    return new User(email.value, country.value, zip.value, pw.value, pwConfirm.value);
 })
 
-email.addEventListener('blur', function(e){
+email.addEventListener('input', function(e){
+    testEmail();
+});
+
+function testEmail(){
     if(email.validity.typeMismatch) {
-        email.setCustomValidity('YOU FOOL ! I asked for an email');
+        email.setCustomValidity('Please provide a valid email address');
         email.reportValidity();
+        return false;
     }   else    {
         email.setCustomValidity('');
+        return true;
     }
-});
+}
 
 email.addEventListener('focus', function(){
     if(email.classList.contains('bounce-invalid')) email.classList.remove('bounce-invalid');
@@ -54,8 +77,8 @@ function validatePw(pass) {
 }
 
 pw.addEventListener('input', function(){
-    
-    if(!validatePw(pw.value) || pw.value.length < 6) {
+    if(pw.classList.contains('bounce-invalid')) pw.classList.remove('bounce-invalid');
+    if(!validatePw(pw.value) || pw.value.length < 6 || pw.value.length > 19) {
         pw.validity.typeMismatch = true;
         pw.setCustomValidity('6 to 20 chars, alphanumeric');
         pw.reportValidity();
@@ -64,7 +87,7 @@ pw.addEventListener('input', function(){
     }
 })
 
-pwConfirm.addEventListener('blur', function(){
+pwConfirm.addEventListener('input', function(){
     if(pwConfirm.value !== pw.value){
         pwConfirm.validity.typeMismatch = true;
         pwConfirm.setCustomValidity('passwords must match');
