@@ -11,17 +11,30 @@ class User {
 }
 
 const email = document.querySelector('#email');
+const country = document.querySelector('#country');
+const zip = document.querySelector('#zip');
 const pw = document.querySelector('#pw');
 const pwConfirm = document.querySelector('#pw-confirm');
 const submitBtn = document.querySelector('[data-button-submit]') 
+let userArray = [];
 
-submitBtn.addEventListener('submit', function(e) {
+email.placeholder = 'e.g: example@email.com';
+pw.placeholder = '6 to 20 chars, alphanumeric'
+
+
+submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
-    
-    
+    if(email.value == ''){
+        email.classList.add('bounce-invalid');
+        return false;
+    }
+    if(pw.value = '') return false;
+
+    userArray.push(new User(email.value, country.value, zip.value, pw.value));
+    return new User(email.value, country.value, zip.value, pw.value);
 })
 
-email.addEventListener('input', function(e){
+email.addEventListener('blur', function(e){
     if(email.validity.typeMismatch) {
         email.setCustomValidity('YOU FOOL ! I asked for an email');
         email.reportValidity();
@@ -29,6 +42,11 @@ email.addEventListener('input', function(e){
         email.setCustomValidity('');
     }
 });
+
+email.addEventListener('focus', function(){
+    if(email.classList.contains('bounce-invalid')) email.classList.remove('bounce-invalid');
+    
+})
 
 function validatePw(pass) {
     let reggae = /^[a-zA-Z0-9_]+$/g;
@@ -46,12 +64,25 @@ pw.addEventListener('input', function(){
     }
 })
 
-pwConfirm.addEventListener('input', function(){
+pwConfirm.addEventListener('blur', function(){
     if(pwConfirm.value !== pw.value){
         pwConfirm.validity.typeMismatch = true;
         pwConfirm.setCustomValidity('passwords must match');
         pwConfirm.reportValidity();
+        pwConfirm.addEventListener('input', function(){
+            if(pwConfirm.value == pw.value){
+                pwConfirm.validity.typeMismatch = false;
+                return;
+            }
+        })
+
     }   else    {
         pwConfirm.setCustomValidity('');
     }
 })
+
+function onlySpaces(str) {
+    return str.trim().length === 0;
+}
+
+console.table(userArray);

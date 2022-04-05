@@ -8,12 +8,86 @@ body {
 }
 
 form  {
-    width: 420px;
+    width: 509px;
     height: 300px;
     display: flex;
     flex-wrap: wrap;
+    font-size: 21px;
 }
 
 form * {
     margin: 10px;
+}
+
+li {
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+}
+
+input {
+    width: auto;
+    height: 31px;
+    font-size: 16px;
+}
+
+.req {
+    color: red;
+
+}
+
+span {
+    margin: 0;
+}
+
+#corner-p {
+    display: flex;
+    justify-content: end;
+}
+
+#corner-span1 {
+    font-size: 16px;
+    margin-right: 17px;
+}
+
+#corner-span2 {
+    font-size: 20px;
+    color: red;
+}
+
+input[type=password]#pw-confirm:invalid,
+input[type=email]#email:invalid {
+    border: solid red 3px;
+}
+/* 
+input[type=email]#email:focus {
+    border: solid black 1px;
+} */
+
+
+.btnSubmit {
+    padding: 20px;
+    margin-left: 0px;
+}
+
+.bounce-invalid {
+    border: solid red 3px;
+}
+
+.tooltipText {
+    display: none;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+
+    opacity: 0;
+    transition: opacity 0.3s;
 }
