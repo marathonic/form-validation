@@ -10,84 +10,48 @@ class User {
     
 }
 
-let users = [];
+const email = document.querySelector('#email');
+const pw = document.querySelector('#pw');
+const pwConfirm = document.querySelector('#pw-confirm');
+const submitBtn = document.querySelector('[data-button-submit]') 
 
-const submitBtn = document.querySelector('[data-button-submit]');
-submitBtn.addEventListener('click', function(e) {
-    e.preventDefault(); 
-
-    // I THINK THOSE ARE TWO DIFFERENT CLASSES:
-    // Each time we get the <result of> collectUserInfo(), 
-    //we're actually getting a brand new User class object,
-    //because collectUserInfo RETURNS a NEW USER, so it's a new one each time. 
-    pushToArray(collectUserInfo());
-    validate(collectUserInfo());
-})
-
-function validate(user) {
-    console.log('we received a new User object, their email on next line')
-    console.log(user.email)
+submitBtn.addEventListener('submit', function(e) {
+    e.preventDefault();
     
-}
-
-
-
-function collectUserInfo() {
-    const userForm = document.querySelector('[data-user-form]');
-    
-        const userMail = document.getElementById('email');
-        const userCountry = document.querySelector('#country');
-        const userZip = document.querySelector('#zip');
-        const userPw = document.querySelector('#pw');
-        const userPwConfirm = document.querySelector('#pw-confirm');
-
-    // userMail.required = true;
-    // userCountry.required = true;
-    // userZip.required = true;
-    // userPw.required = true;
-    // userPwConfirm.required = true;
-
-
-        
-        
-        //Paste validation function here?
-        // Validation needs to happen at this stage 
-        // if(userMail.value === '') return;
-
-        // should we return an object? 
-
-        return new User(userMail.value, userCountry.value, userZip.value, userPw.value, userPwConfirm.value);
-
-
-        return {}
-        users.push(new User(userMail.value,userCountry, userZip, userPw, userPwConfirm)) 
-
-        console.table(users);
-
-    }
-
-function pushToArray(newUser){
-  users.push(newUser);  
-  console.table(users);
-} 
-
-
-let userPwConfirm = document.querySelector('#pw-confirm');
-userPwConfirm.addEventListener('input', function(){
-
-    let userPw = document.querySelector('#pw');
-    if(userPw.value !== userPwConfirm.value) {
-        userPwConfirm.setCustomValidity('passwords do not match')
-        return false;
-    }
     
 })
 
-document.querySelector('#pw').addEventListener('input', validatePassword)
+email.addEventListener('input', function(e){
+    if(email.validity.typeMismatch) {
+        email.setCustomValidity('YOU FOOL ! I asked for an email');
+        email.reportValidity();
+    }   else    {
+        email.setCustomValidity('');
+    }
+});
 
-function validatePassword(pw){
-    pw = document.querySelector('#pw');
-    let regg = /^[a-zA-Z0-9_]+$/;
-    return regg.test(pw.value);
+function validatePw(pass) {
+    let reggae = /^[a-zA-Z0-9_]+$/g;
+    return reggae.test(pass)
 }
 
+pw.addEventListener('input', function(){
+    
+    if(!validatePw(pw.value) || pw.value.length < 6) {
+        pw.validity.typeMismatch = true;
+        pw.setCustomValidity('6 to 20 chars, alphanumeric');
+        pw.reportValidity();
+    }   else    {
+        pw.setCustomValidity('');
+    }
+})
+
+pwConfirm.addEventListener('input', function(){
+    if(pwConfirm.value !== pw.value){
+        pwConfirm.validity.typeMismatch = true;
+        pwConfirm.setCustomValidity('passwords must match');
+        pwConfirm.reportValidity();
+    }   else    {
+        pwConfirm.setCustomValidity('');
+    }
+})
